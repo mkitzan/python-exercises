@@ -1,0 +1,3 @@
+Run the main.py on a windows machine in a py.exe window
+
+main.py has a "hidden" command 'format' which just makes a new key

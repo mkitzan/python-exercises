@@ -1,0 +1,11 @@
+A suprisingly useful and comprehensive statistic break down for the 
+books.csv file
+
+run "py book_statistics books.csv", to view stats of the books.
+
+Features:
+	Total book/pages
+	Unique authors/publish years
+	Mean book length/publish year
+	Standard Deviation book lengths/publish years
+	Distribution bar charts book/pages, authors, publish years

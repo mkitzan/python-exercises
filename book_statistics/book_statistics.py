@@ -137,6 +137,22 @@ class Aggregate:
 			else:
 				y_minmax = self.minmax('y', 1)
 				x_count = [ self.roundup(self.years[k][1], 100) / 100 for k in x_labels ]
+		elif x_axis == 'pages':
+			x_labels = sorted(list(set([ int(self.roundup(b.pages, 100) / 100) for b in self.books ])))
+			x_count = [ 0 for k in x_labels ]
+			
+			index = -1
+			for i in x_labels:
+				index += 1
+				for b in self.books:
+					pc = self.roundup(b.pages, 100) / 100
+					if pc == i:
+						x_count[index] += 1
+			max = 0
+			for i in x_count:
+				if i > max:
+					max = i
+			y_minmax = (0, max)
 		else:
 			return -1
 		
@@ -146,7 +162,8 @@ class Aggregate:
 			y_labels = [ n for n in range(int(y_minmax[1] / 100) + 1) ]
 		y_labels.remove(0)
 		
-		print("   X: " + x_axis + "  Y: " + y_axis + "  Scale: " + (str(100) if y_axis == "pages" else str(1)))
+		
+		print("   X: " + x_axis + "  X-Scale: " + (str(100) if x_axis == "pages" else str(1)) + "   Y: " + y_axis + "  Y-Scale: " + (str(100) if y_axis == "pages" else str(1)))
 		for i in reversed(y_labels):
 			if i > 9:
 				line = str(i) + "|"
@@ -165,13 +182,21 @@ class Aggregate:
 			line += "---"
 		print(line)
 		
-		line = "   "
+		x_labels = [ str(el) for el in x_labels ]
 		if x_axis == 'years':
 			x_labels = [ str(k)[2:] for k in x_labels ]
-		else:
+		elif x_axis == 'authors':
 			x_labels = [ "".join([ n[0] for n in a if len(n) > 2 ]) for a in [ k.split() for k in x_labels ] ]
 		line = "   "
-		line += " ".join(x_labels)
+		if x_axis != 'pages':
+			line += " ".join(x_labels)
+		else:
+			line = "  "
+			for el in x_labels:
+				if len(el) < 2:
+					line += "  " + el
+				else:
+					line += " " + el
 		print(line)
 		
 def main():
@@ -185,20 +210,25 @@ def main():
 	
 	print("Total books read: 	" + str(aggregator.n('b')))
 	print("Total pages read: 	" + str(aggregator.sum('p')))
-	print("Unique pub years: 	" + str(aggregator.n('y')))
 	print("Unique authors: 	" + str(aggregator.n('a')))
-	print("Mean pub year: 		" + str(aggregator.mean('y')))
+	print("Unique pub years: 	" + str(aggregator.n('y')))
 	print("Mean book length: 	" + str(aggregator.mean('p')))
-	print("SD of pub years: 	" + str(aggregator.sd('y')))
+	print("Mean pub year: 		" + str(aggregator.mean('y')))
 	print("SD of book lengths: 	" + str(aggregator.sd('p')))
+	print("SD of pub years: 	" + str(aggregator.sd('y')))
 	mnmx = aggregator.minmax('b', -1)
 	print("Shortest book:		" + str(mnmx[0]))
 	print("Longest book:		" + str(mnmx[1]))
 	print()
+	print("\nBook/Page Distribution:\n")
+	aggregator.plot('pages', 'books')
+	print()
+	print("\nAuthor Distributions:\n")
 	aggregator.plot('authors', 'pages')
 	print()
 	aggregator.plot('authors', 'books')
 	print()
+	print("\nPub Year Distributions:\n")
 	aggregator.plot('years', 'pages')
 	print()
 	aggregator.plot('years', 'books')

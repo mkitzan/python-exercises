@@ -139,8 +139,15 @@ class Aggregate:
 				x_count = [ self.roundup(self.years[k][1], 100) / 100 for k in x_labels ]
 		elif x_axis == 'pages':
 			x_labels = sorted(list(set([ int(self.roundup(b.pages, 100) / 100) for b in self.books ])))
-			x_count = [ 0 for k in x_labels ]
 			
+			max = 0
+			for i in x_labels:
+				if i > max:
+					max = i
+			x_labels = [ n for n in range(max+1) ]
+			x_labels.remove(0)
+			
+			x_count = [ 0 for k in x_labels ]
 			index = -1
 			for i in x_labels:
 				index += 1

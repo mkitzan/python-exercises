@@ -1,7 +1,7 @@
 A suprisingly useful and comprehensive statistic break down for the 
 books.csv file
 
-run "py book_statistics books.csv", to view stats of the books.
+run "py book_statistics books.csv" or run the batch script
 
 Features:
 	Total book/pages

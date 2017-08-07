@@ -206,7 +206,7 @@ class Aggregate:
 					line += " " + el
 		print(line)
 		
-def main():
+def output():
 	aggregator = Aggregate()
 	
 	with open(sys.argv[1], 'r') as infile:
@@ -239,6 +239,16 @@ def main():
 	aggregator.plot('years', 'pages')
 	print()
 	aggregator.plot('years', 'books')
+		
+def main():
+	if sys.argv[1] == "books.csv":
+		output()
+	else:
+		out = open("books.csv", 'a')
+		out.write("\n" + " ".join(sys.argv[1:]))
+		out.close()
+		print(" ".join(sys.argv[1:]) + " entered into books.csv")
+	
 	
 if __name__ == '__main__':
 	main()

@@ -1,4 +1,8 @@
 @echo off
 title Book Statistics
-py book_statistics.py books.csv
-pause
+:start
+cls
+set /p ARG="Program input: "
+py book_statistics.py %ARG%
+pause >nul
+if NOT "%ARG%" == "books.csv" goto start

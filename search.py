@@ -14,10 +14,9 @@ def pattern(file, key):
 				num += 1
 		# print matching line numbers for the file
 		if lines != []:
-			print("Pattern matched at:\t" + file)
+			print("\nPattern matched at:\t" + file)
 			for num in lines:
 				print("\t" + str(num))
-			print()
 	except:
 		# catches parsing exceptions
 		return
